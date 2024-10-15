@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-init
+        image: postgres:14
+        command: ["sh", "-c","psql -h 127.0.0.1 -p 8086 -U akito -d akidb -f /init/init.sql" ]
+        env:
+        - name: POSTGRES_GPASSWORD
+          value: "akipass"
+        volumeMounts:
+          - name: init-script
+            mountPath: /init
+      restartPolicy: Never
+      volumes:
+      - name: init-script
+        configMap:
+          name: init-sql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-sql
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS staff (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL
+    );
+    INSERT INTO example (name) VALUES ('default');

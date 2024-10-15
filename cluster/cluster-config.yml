@@ -4,7 +4,7 @@ nodes:
 - role: control-plane
   image: kindest/node:v1.29.0
 - role: worker
-  image: kindest/node:v1.29.0
+  image: web-custom-kind-image:v1.29.0
   extraPortMappings:
   - containerPort: 30950
     hostPort: 8085
@@ -13,7 +13,7 @@ nodes:
   labels:
     tier: web-node
 - role: worker
-  image: kindest/node:v1.29.0
+  image: db-custom-kind-image:v1.29.0
   extraPortMappings:
   - containerPort: 30951
     hostPort: 8086
