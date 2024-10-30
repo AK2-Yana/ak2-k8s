@@ -29,7 +29,7 @@ metadata:
   name: app-vol
   labels:
     type: local
-    app: baseapp
+    app: app-data
 spec:
   storageClassName: app-local-storage
   capacity:

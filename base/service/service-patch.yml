@@ -16,13 +16,11 @@ kind: Service
 metadata:
   name: base-service-db
 spec:
-  type: NodePort
   selector:
     app: postgres
   ports:
   - port: 5432
-    targetPort: 5432
-    nodePort: 30951
+    targetPort: 30951
 
 
 

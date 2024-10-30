@@ -1,12 +1,11 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres
 spec:
   selector:
     matchLabels:
       app: postgres
-  serviceName: postgres
   template:
     metadata:
       labels:
@@ -14,7 +13,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:14
+        image: 'postgres:14'
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
@@ -30,12 +29,7 @@ spec:
         volumeMounts:
          - mountPath: /var/lib/postgresql/data
            name: postgresdata
-  volumeClaimTemplates:
-  - metadata:
-      name: postgresdata
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: postgres-local-storage
-      resources:
-        requests:
-          storage: 1Gi
+      volumes:
+      - name: postgresdata
+        persistentVolumeClaim:
+          claimName: postgres-volume-claim

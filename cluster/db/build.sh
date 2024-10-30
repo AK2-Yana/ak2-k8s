@@ -1,1 +1,0 @@
-docker build -t db-custom-kind-image:v1.29.0 .
