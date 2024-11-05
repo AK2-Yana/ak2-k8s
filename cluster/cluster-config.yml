@@ -21,3 +21,12 @@ nodes:
     protocol: TCP
   labels:
     tier: db-node
+- role: worker
+  image: redis-custom-kind-image:v1.29.0
+  extraPortMappings:
+  - containerPort: 30952
+    hostPort: 8087
+    listenAddress: "127.0.0.1"
+    protocol: TCP
+  labels:
+    tier: redis-node

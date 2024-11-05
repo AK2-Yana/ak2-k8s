@@ -1,0 +1,1 @@
+docker build -t redis-custom-kind-image:v1.29.0 .

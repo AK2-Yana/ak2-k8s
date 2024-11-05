@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-cluster
+  namespace: my-redis  # Specify the namespace
+spec:
+  serviceName: redis-cluster-service
+  replicas: 6
+  selector:
+    matchLabels:
+      app: redis-cluster
+  template:
+    metadata:
+      labels:
+        app: redis-cluster
+    spec:
+      containers:
+      - name: redis-cluster
+        image: redis:7.4.1
+        command: ["redis-server", "/etc/redis/redis.conf"]
+        volumeMounts:
+        - name: redis-config
+          mountPath: /etc/redis
+        ports:
+        - containerPort: 6379
+      volumes:
+      - name: redis-config
+        configMap:
+          name: redis-config
