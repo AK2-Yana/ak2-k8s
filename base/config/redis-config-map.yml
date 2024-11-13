@@ -1,22 +1,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redis-config
-  namespace: my-redis
+  name: redis-conf
 data:
- redis.conf: |
+  redis.conf: |
+    port 6379
+
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    cluster-node-timeout 5000
+    appendonly yes
+
     bind 0.0.0.0
 
-    protected-mode no
-
-    enable-protected-configs yes 
-
-    enable-debug-command yes 
-
-    enable-module-command yes
-
-    timeout 0
-
-    tcp-keepalive 300
-
-    appendonly yes
+    cluster-announce-ip 127.0.0.1

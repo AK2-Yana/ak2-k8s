@@ -1,29 +1,37 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: redis-cluster
-  namespace: my-redis  # Specify the namespace
+  name: redis
 spec:
-  serviceName: redis-cluster-service
-  replicas: 6
   selector:
     matchLabels:
-      app: redis-cluster
+      app: redis
   template:
     metadata:
       labels:
-        app: redis-cluster
+        app: redis
     spec:
       containers:
-      - name: redis-cluster
+      - name: redis
         image: redis:7.4.1
-        command: ["redis-server", "/etc/redis/redis.conf"]
-        volumeMounts:
-        - name: redis-config
-          mountPath: /etc/redis
+        resources:
+          limits:
+            memory: "1Gi"  # 必要に応じて増やす
+            cpu: "1"
+          requests:
+            memory: "512Mi"  # 必要に応じて増やす
+            cpu: "500m"
         ports:
         - containerPort: 6379
+        command:
+          - "sh"
+          - "-c"
+          - "redis-server /conf/redis.conf"
+        volumeMounts:
+        - name: conf
+          mountPath: /conf
+          readOnly: false
       volumes:
-      - name: redis-config
+      - name: conf
         configMap:
-          name: redis-config
+          name: redis-conf
